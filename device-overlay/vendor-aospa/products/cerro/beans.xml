@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+     cerro (Z60 Ultra / SM8650 pineapple) — aospa-shadedark calcite
+     Device/kernel/vendor: nubia-sm8650-devs lineage-23.2 (U base).
+     CAF HAL paths: Lineage CAF sm8650 (DT hardcodes hardware/qcom-caf/sm8650).
+     Switch device trees to ycrrongos penguinos-calcite forks when ready.
+-->
+<manifest>
+  <remote name="github" fetch="https://github.com" />
+
+  <!-- Device / kernel / vendor (U) -->
+  <project path="device/nubia/cerro"
+           name="nubia-sm8650-devs/android_device_nubia_cerro"
+           remote="github" revision="lineage-23.2" />
+  <project path="device/nubia/sm8650-common"
+           name="nubia-sm8650-devs/android_device_nubia_sm8650-common"
+           remote="github" revision="lineage-23.2" />
+  <project path="kernel/nubia/sm8650"
+           name="nubia-sm8650-devs/android_kernel_nubia_sm8650"
+           remote="github" revision="lineage-23.2" />
+  <project path="kernel/nubia/sm8650-devicetrees"
+           name="nubia-sm8650-devs/android_kernel_nubia_sm8650-devicetrees"
+           remote="github" revision="lineage-23.2" />
+  <project path="kernel/nubia/sm8650-modules"
+           name="nubia-sm8650-devs/android_kernel_nubia_sm8650-modules"
+           remote="github" revision="lineage-23.2" />
+  <project path="vendor/nubia/cerro"
+           name="nubia-sm8650-devs/proprietary_vendor_nubia_cerro"
+           remote="github" revision="lineage-23.2" />
+  <project path="vendor/nubia/sm8650-common"
+           name="nubia-sm8650-devs/proprietary_vendor_nubia_sm8650-common"
+           remote="github" revision="lineage-23.2" />
+
+  <!-- Kernel host tools: libelf/openssl/pahole/lz4 for Lineage kernel.mk HOSTCFLAGS -->
+  <project path="prebuilts/kernel-build-tools"
+           name="kernel/prebuilts/build-tools"
+           remote="aosp"
+           revision="main-kernel-2025"
+           clone-depth="1" />
+  <project path="prebuilts/tools-lineage"
+           name="LineageOS/android_prebuilts_tools-lineage"
+           remote="github" revision="lineage-23.2" clone-depth="1" />
+
+  <!-- Lineage sepolicy (libperfmgr only) + IR interfaces -->
+  <project path="device/lineage/sepolicy"
+           name="LineageOS/android_device_lineage_sepolicy"
+           remote="github" revision="lineage-24.0" />
+  <project path="hardware/lineage/interfaces"
+           name="LineageOS/android_hardware_lineage_interfaces"
+           remote="github" revision="lineage-23.2" />
+
+  <!-- CAF common + sm8650 Android.bp link -->
+  <project path="hardware/qcom-caf/common"
+           name="LineageOS/android_hardware_qcom-caf_common"
+           remote="github" revision="lineage-23.2">
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8650/Android.bp" />
+  </project>
+
+  <!-- SM8650 audio / display / data (Lineage CAF paths; DT hardcodes) -->
+  <project path="hardware/qcom-caf/sm8650/audio/agm"
+           name="LineageOS/android_vendor_qcom_opensource_agm"
+           remote="github" revision="lineage-23.2-caf-sm8650" />
+  <project path="hardware/qcom-caf/sm8650/audio/graphservices"
+           name="LineageOS/android_vendor_qcom_opensource_audioreach-graphservices"
+           remote="github" revision="lineage-23.2-caf-sm8650" />
+  <project path="hardware/qcom-caf/sm8650/audio/pal"
+           name="LineageOS/android_vendor_qcom_opensource_arpal-lx"
+           remote="github" revision="lineage-23.2-caf-sm8650" />
+  <project path="hardware/qcom-caf/sm8650/audio/primary-hal"
+           name="LineageOS/android_hardware_qcom_audio-ar"
+           remote="github" revision="lineage-23.2-caf-sm8650" />
+  <project path="hardware/qcom-caf/sm8650/data-ipa-cfg-mgr"
+           name="LineageOS/android_vendor_qcom_opensource_data-ipa-cfg-mgr"
+           remote="github" revision="lineage-23.2-caf-sm8650" />
+  <project path="hardware/qcom-caf/sm8650/dataipa"
+           name="LineageOS/android_vendor_qcom_opensource_dataipa"
+           remote="github" revision="lineage-23.2-caf-sm8650" />
+  <project path="hardware/qcom-caf/sm8650/display"
+           name="LineageOS/android_hardware_qcom_display"
+           remote="github" revision="lineage-23.2-caf-sm8650" />
+
+  <project path="vendor/qcom/opensource/audio-hal/st-hal-ar-legacy"
+           name="LineageOS/android_vendor_qcom_opensource_audio-hal_st-hal-ar"
+           remote="github" revision="lineage-23.2-legacy" />
+
+  <!-- nubia vendor blob libcpion DT_NEEDED; AOSPA CLO lacks this -->
+  <project path="vendor/qcom/opensource/libvmmem"
+           name="LineageOS/android_vendor_qcom_opensource_libvmmem"
+           remote="github" revision="lineage-23.2" />
+</manifest>

@@ -5,7 +5,13 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DEST="${ROOT}/docs/agent-transcripts"
-SRC_DEFAULT="${HOME}/.cursor/projects/mnt-data-AOSPA-Z60U/agent-transcripts"
+SRC_DEFAULT="${AOSPA_CERRO_REAL_HOME:-$HOME}/.cursor/projects/mnt-data-AOSPA-Z60U/agent-transcripts"
+# Prefer real user home even if proxy-env overrode HOME for git.
+if [[ -n "${AOSPA_CERRO_REAL_HOME:-}" ]]; then
+  SRC_DEFAULT="${AOSPA_CERRO_REAL_HOME}/.cursor/projects/mnt-data-AOSPA-Z60U/agent-transcripts"
+elif [[ -d /home/rong/.cursor/projects/mnt-data-AOSPA-Z60U/agent-transcripts ]]; then
+  SRC_DEFAULT="/home/rong/.cursor/projects/mnt-data-AOSPA-Z60U/agent-transcripts"
+fi
 SRC="${AOSPA_CERRO_TRANSCRIPTS_SRC:-$SRC_DEFAULT}"
 
 mkdir -p "${DEST}"

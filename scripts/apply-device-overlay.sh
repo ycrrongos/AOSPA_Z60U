@@ -23,27 +23,59 @@ for tree in cerro sm8650-common; do
   echo "[apply-device-overlay] rsync $tree"
   rsync -a --delete --exclude='.git' "$OVERLAY/$tree/" "$dst/"
 done
+
+# AOSPA product shell lives under vendor/aospa/products/cerro (not dual-registered
+# with device/nubia/cerro/aospa_cerro.mk — PRODUCT_NAME must be unique).
+VENDOR_PROD_SRC="$ROOT/device-overlay/vendor-aospa/products/cerro"
+VENDOR_PROD_DST="$SOURCE/vendor/aospa/products/cerro"
+if [[ -d "$VENDOR_PROD_SRC" && -d "$SOURCE/vendor/aospa/products" ]]; then
+  mkdir -p "$VENDOR_PROD_DST"
+  rsync -a --delete "$VENDOR_PROD_SRC/" "$VENDOR_PROD_DST/"
+  echo "[apply-device-overlay] installed vendor/aospa/products/cerro"
+fi
+
 PRODUCTS_MK="$SOURCE/vendor/aospa/products/AndroidProducts.mk"
 if [[ -f "$PRODUCTS_MK" ]]; then
   python3 - "$PRODUCTS_MK" <<'PY'
 from pathlib import Path
+import re
 import sys
 p = Path(sys.argv[1])
 text = p.read_text()
-old = "# cerro (unofficial, local overlay)\n$(call inherit-product-if-exists, device/nubia/cerro/aospa_cerro.mk)"
-new = (
-    "# cerro (unofficial, local overlay)\n"
-    "PRODUCT_MAKEFILES += device/nubia/cerro/aospa_cerro.mk\n"
-    "COMMON_LUNCH_CHOICES += aospa_cerro-userdebug"
+removed = False
+text2, n = re.subn(
+    r"(?m)^# cerro \(unofficial, local overlay\)\n"
+    r"PRODUCT_MAKEFILES \+= device/nubia/cerro/aospa_cerro\.mk\n"
+    r"COMMON_LUNCH_CHOICES \+= aospa_cerro-userdebug\n?",
+    "",
+    text,
 )
-if old in text:
-    p.write_text(text.replace(old, new))
-    print("[apply-device-overlay] replaced inherit-product-if-exists with PRODUCT_MAKEFILES")
-elif "device/nubia/cerro/aospa_cerro.mk" not in text:
-    p.write_text(text.rstrip() + "\n\n" + new + "\n")
-    print("[apply-device-overlay] appended PRODUCT_MAKEFILES for aospa_cerro")
+if n:
+    text = text2
+    removed = True
+    print("[apply-device-overlay] removed legacy device/nubia cerro PRODUCT_MAKEFILES append")
+# Ensure vendor product is listed once
+line_mk = "    $(LOCAL_DIR)/cerro/aospa_cerro.mk \\"
+line_lunch = "    aospa_cerro-userdebug \\"
+changed = False
+if "$(LOCAL_DIR)/cerro/aospa_cerro.mk" not in text:
+    anchor = "PRODUCT_MAKEFILES += \\\n"
+    if anchor not in text:
+        raise SystemExit("AndroidProducts.mk missing PRODUCT_MAKEFILES block")
+    text = text.replace(anchor, anchor + line_mk + "\n", 1)
+    changed = True
+    print("[apply-device-overlay] registered $(LOCAL_DIR)/cerro/aospa_cerro.mk")
+if "aospa_cerro-userdebug" not in text:
+    anchor = "COMMON_LUNCH_CHOICES += \\\n"
+    if anchor not in text:
+        raise SystemExit("AndroidProducts.mk missing COMMON_LUNCH_CHOICES block")
+    text = text.replace(anchor, anchor + line_lunch + "\n", 1)
+    changed = True
+    print("[apply-device-overlay] registered aospa_cerro-userdebug lunch")
+if changed or removed:
+    p.write_text(text)
 else:
-    print("[apply-device-overlay] AndroidProducts already lists aospa_cerro")
+    print("[apply-device-overlay] AndroidProducts already lists vendor cerro only")
 PY
 fi
 python3 "$ROOT/scripts/patch-soong-isolate-caf-common.py"
