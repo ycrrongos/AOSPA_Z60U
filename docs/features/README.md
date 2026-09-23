@@ -44,12 +44,13 @@
 | 0036 | [qseecomd-libdisplayconfig](0036-qseecomd-libdisplayconfig.md) | qseecomd 缺 `libdisplayconfig.qti`；late-fs 启动 |
 | 0037 | [caf-display-hwc](0037-caf-display-hwc.md) | CAF HWC：soong NS + qtidisplay soong_config；编 composer/mapper |
 | 0038 | [mediaserver-64b-setupwizard](0038-mediaserver-64b-setupwizard.md) | 缺 `ro.mediaserver.64b.enable` → 无 media.player；SetupWizard ANR |
-| 0039 | [cerro-audio-dtbo-merge](0039-cerro-audio-dtbo-merge.md) | MTP audio DTBO 盖掉 Lineage zte 声卡；merge 后原地修 num-macros/routing |
+| 0039 | [cerro-audio-dtbo-merge](0039-cerro-audio-dtbo-merge.md) | **已撤回**（0049）；勿再刷 fill/asoc DTBO |
 | 0040 | [ir-hal-sepolicy](0040-ir-hal-sepolicy.md) | Lineage IR HAL 缺 file_contexts → system_server 死等 ConsumerIr |
 | 0042 | [vibrator-effect-stream](0042-vibrator-effect-stream.md) | USE_EFFECT_STREAM + richtap FIFO；CLO oneshot 改走 effect_stream |
-| 0043 | [phantom-h2w-jack](0043-phantom-h2w-jack.md) | 无 3.5mm；MTP Headset Jack 幽灵 h2w/LINE 抢路由 |
+| 0043 | [phantom-h2w-jack](0043-phantom-h2w-jack.md) | **已撤回**（0049）；jack/HPH 恢复 Lineage |
 | 0044 | [haptic-custom-fifo-alloc](0044-haptic-custom-fifo-alloc.md) | haptic_hv custom FIFO 少分配 `sizeof(int)` → 修 kvzalloc |
 | 0045 | [haptic-reset-gpio-dtbo](0045-haptic-reset-gpio-dtbo.md) | cerro reset-gpio=120 须整节点重写，否则 DTBO phandle 失效停在 90 |
 | 0046 | [unicom-cu-openmkt-mbn](0046-unicom-cu-openmkt-mbn.md) | mbn_sw 列了 CU OpenMkt 但 modem.img 无文件 → 联通停 LTE |
 | 0047 | [awinic-haptic-hv-module](0047-awinic-haptic-hv-module.md) | Voltage `haptic.ko`（AWINIC_HAPTIC_HV）；无模块则 HAL 空转无触感 |
 | 0048 | [github-version-snapshots](0048-github-version-snapshots.md) | 每版 `github-snapshot` 推 GitHub + 镜像 Cursor 聊天，可回滚 |
+| 0049 | [audio-reset-full-build-baseline](0049-audio-reset-full-build-baseline.md) | 声音修补清零；sync 后先编无音频修整包验开机 |
