@@ -39,3 +39,4 @@ __pycache__/
 
 # Cursor local caches (transcripts mirrored into docs/agent-transcripts/)
 .cursor/cache/
+/scripts/run-sync-0049.sh
