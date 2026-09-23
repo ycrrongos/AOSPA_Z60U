@@ -54,3 +54,4 @@
 | 0047 | [awinic-haptic-hv-module](0047-awinic-haptic-hv-module.md) | Voltage `haptic.ko`（AWINIC_HAPTIC_HV）；无模块则 HAL 空转无触感 |
 | 0048 | [github-version-snapshots](0048-github-version-snapshots.md) | 每版 `github-snapshot` 推 GitHub + 镜像 Cursor 聊天，可回滚 |
 | 0049 | [audio-reset-full-build-baseline](0049-audio-reset-full-build-baseline.md) | 声音修补清零；sync 后先编无音频修整包验开机 |
+| 0050 | [disable-fingerprint-spoof-default-adb-root](0050-disable-fingerprint-spoof-default-adb-root.md) | 关库存指纹伪装（可再开）；userdebug 默认 adb root |
