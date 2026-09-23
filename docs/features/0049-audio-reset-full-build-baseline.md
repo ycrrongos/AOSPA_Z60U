@@ -27,6 +27,8 @@
 
 本机 `AOSPA_Z60U/source` → 符号链接到已有 `PenguinOS_cerro/source`（aospa-shadedark `calcite`，避免再占 400G）。
 
+Lunch 只走 **`vendor/aospa/products/cerro/aospa_cerro.mk`**（真相源：`device-overlay/vendor-aospa/products/cerro/`）。`device/nubia/cerro/AndroidProducts.mk` 故意空，避免 `PRODUCT_NAME` 双注册。
+
 ## 流程
 
 ```bash

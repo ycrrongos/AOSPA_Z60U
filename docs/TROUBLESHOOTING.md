@@ -550,3 +550,9 @@ edl w dtbo_b prebuilts-cerro/dtbo/dtbo-STOCK-sep22-BOOT_OK.img
 - **未动**：触感等非声音功能。
 - **树**：`AOSPA_Z60U/source` → `PenguinOS_cerro/source`（shadedark calcite）。参考 OTA `~/Downloads/aospa_cerro-ota.zip` 只查阅不刷。
 - **文档**：`docs/features/0049-audio-reset-full-build-baseline.md`
+
+### 2026-09-23 — soong bootstrap: New plugins soong-cerro-generator
+
+- **症状**：`rom-build` 在 soong bootstrap 失败：`New plugins are not supported; however ["soong-cerro-generator"] were found`.
+- **原因**：0030 `headers_install` 自定义 soong 插件；A17 soong 默认拒收未登记插件。
+- **解决**：`BoardConfigSoong.mk` 加 `BUILD_BROKEN_PLUGIN_VALIDATION += soong-cerro-generator`（非声音修补）。
