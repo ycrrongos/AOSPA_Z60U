@@ -19,7 +19,8 @@ AOSPA Settings 也没有 Lineage 式「ADB root」菜单；userdebug 需电脑�
 
 - `device-overlay/vendor-aospa/products/cerro/aospa_cerro.mk`（lunch 实际用）
 - `device-overlay/nubia/cerro/aospa_cerro.mk`（保持同步）
-- `device-overlay/nubia/cerro/device.mk`
+- `device-overlay/nubia/cerro/device.mk`（**由 `scripts/strip-plasma-device-overlay.sh` heredoc 生成**；改 adb 拷贝/属性必须改 strip 模板）
+- `device-overlay/nubia/cerro/AndroidProducts.mk`（同样由 strip 写成空 lunch；注册只在 `vendor/aospa/products`）
 - `device-overlay/nubia/cerro/rootdir/etc/init.cerro.adb_root.rc`
 - 开关表：`docs/aospa-cerro-patch-toggles.md`
 

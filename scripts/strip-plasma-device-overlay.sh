@@ -41,21 +41,28 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/rootdir/etc/init.cerro.camera.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.cerro.camera.rc \
     $(DEVICE_PATH)/rootdir/bin/init.cerro.bootdiag.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.cerro.bootdiag.sh \
     $(DEVICE_PATH)/rootdir/etc/init.cerro.bootdiag.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.cerro.bootdiag.rc \
-    $(DEVICE_PATH)/rootdir/etc/init/qseecomd.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/qseecomd.rc
+    $(DEVICE_PATH)/rootdir/etc/init/qseecomd.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/qseecomd.rc \
+    $(DEVICE_PATH)/rootdir/etc/init.cerro.adb_root.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.cerro.adb_root.rc
+
+# 0050 bringup debug: default ADB + adbd as root on userdebug (no Settings toggle).
+ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+PRODUCT_PRODUCT_PROPERTIES += \
+    persist.sys.usb.config=adb \
+    ro.adb.secure=0
+endif
 EOF
 cat > "$CERRO/AndroidProducts.mk" <<'EOF'
 #
 # SPDX-FileCopyrightText: The LineageOS Project
 # SPDX-License-Identifier: Apache-2.0
 #
+# Lunch is registered in vendor/aospa/products/AndroidProducts.mk only.
+# Do not dual-register aospa_cerro here (PRODUCT_NAME must be unique).
+#
 
-PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/aospa_cerro.mk
+PRODUCT_MAKEFILES :=
 
-COMMON_LUNCH_CHOICES += \
-    aospa_cerro-userdebug \
-    aospa_cerro-user \
-    aospa_cerro-eng
+COMMON_LUNCH_CHOICES :=
 EOF
 if grep -q 'plasmaos_sukisu.config' "$COMMON/BoardConfigCommon.mk"; then
   sed -i '/vendor\/plasmaos_sukisu.config/d' "$COMMON/BoardConfigCommon.mk"

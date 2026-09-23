@@ -239,6 +239,7 @@
 - **刷机**：ramoops → `vendor_boot`；fstab → `vendor_boot`+`vendor`；bootdiag → `vendor`。动态分区 vendor 须 **fastbootd**（`fastboot reboot fastboot`），bootloader 里 `flash vendor` 会 Partition not found。
 - **2026-08-25 qseecomd exit 255（0036）**：strace 显示缺 **`/vendor/lib64/libdisplayconfig.qti.so`**（`libops.so` NEEDED）。CAF 该模块在空 sm8650 NS 外不可见。补 prebuilt + late-fs 启动后 qseecomd 稳定；zygote 起来，但 **surfaceflinger SIGABRT**（约 4 次后 init 杀 zygote）→ 仍无 `boot_completed`。日志 `cerro-bootdiag-pull5/`（strace）、`pull6/`（SF 循环）。下一步：编/装 HWC composer（同 NS 问题）。
 - **坑**：`scripts/strip-plasma-device-overlay.sh` **会重写** `device-overlay/.../cerro/device.mk`。bootdiag / qseecomd.rc 的 `PRODUCT_COPY_FILES` 必须写进该脚本的 heredoc，否则 `apply-device-overlay.sh` 会冲掉。
+- **0050**：同样必须把 `init.cerro.adb_root.rc` 的 `PRODUCT_COPY_FILES` 与 userdebug `ro.adb.secure=0` 写进 strip heredoc；`AndroidProducts.mk` 也由 strip 写成空 lunch（避免与 `vendor/aospa/products` 双重注册）。只改 overlay 文件会被下次 apply 冲掉。
 
 ### 2026-08-25 — surfaceflinger SIGABRT：缺 CAF HWC（0037）
 
