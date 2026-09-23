@@ -542,3 +542,11 @@ edl w dtbo_b prebuilts-cerro/dtbo/dtbo-STOCK-sep22-BOOT_OK.img
 - **错误做法**：只留单个 WORKING img / 口头说“这版能开”。
 - **正确做法**：元仓 https://github.com/ycrrongos/AOSPA_Z60U （私有）。每版跑 `bash scripts/github-snapshot.sh "标题"`（同步 Cursor 聊天到 `docs/agent-transcripts/` + 详细 commit + `snapshot-*` tag）。回滚：`git fetch && git tag -l 'snapshot-*'` / `git checkout <tag> -- device-overlay scripts docs`。
 - **文档**：`docs/features/0048-github-version-snapshots.md`；`AGENTS.md` 规则 6。
+
+### 2026-09-23 — 声音修补全部撤回，先编无音频修整包
+
+- **原因**：音频 DTBO/jack 试验与卡第一屏纠缠；上下文丢失后无法定位。用户要求声音从头重做。
+- **已删**：`fix-cerro-audio-dtbo.py`、jack rc/sh；mixer/HPH 与 `config_useDevInputEventForAudioJack` 回 Lineage；0039/0043 标撤回。
+- **未动**：触感等非声音功能。
+- **树**：`AOSPA_Z60U/source` → `PenguinOS_cerro/source`（shadedark calcite）。参考 OTA `~/Downloads/aospa_cerro-ota.zip` 只查阅不刷。
+- **文档**：`docs/features/0049-audio-reset-full-build-baseline.md`

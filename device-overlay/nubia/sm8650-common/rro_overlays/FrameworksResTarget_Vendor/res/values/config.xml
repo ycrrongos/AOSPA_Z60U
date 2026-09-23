@@ -438,8 +438,7 @@
 
     <!-- When true use the linux /dev/input/event subsystem to detect the switch changes
          on the headphone/microphone jack. When false use the older uevent framework. -->
-    <!-- AOSPA cerro: no 3.5mm jack; MTP ALSA jack stuck → phantom h2w -->
-    <bool name="config_useDevInputEventForAudioJack">false</bool>
+    <bool name="config_useDevInputEventForAudioJack">true</bool>
 
     <!-- set to false if we need to show user confirmation
          when alpha identifier is not provided by the UICC -->

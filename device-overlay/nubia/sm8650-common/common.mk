@@ -333,8 +333,6 @@ PRODUCT_PACKAGES += \
     init.qcom.rc \
     init.recovery.qcom.rc \
     init.target.rc \
-    init.cerro.audio_jack.rc \
-    cerro_clear_audio_jack.sh \
     ueventd.qcom.rc
 
 # Sensors

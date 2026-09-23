@@ -83,9 +83,8 @@
     <ctl name="RX_FIR Filter" value="OFF" />
     <ctl name="RX_EAR Mode" value="OFF" />
     <!-- WCD939x enable PCM path by default -->
-    <!-- AOSPA cerro: no 3.5mm jack; keep HPH PCM off (AW882 on MI2S) -->
-    <ctl name="RX_HPH PCM" value="0" />
-    <ctl name="HPH PCM Enable" value="0" />
+    <ctl name="RX_HPH PCM" value="1" />
+    <ctl name="HPH PCM Enable" value="1" />
     <ctl name="PM_QOS Vote" value="Disable" />
 
     <!-- TX Controls -->
@@ -345,9 +344,6 @@
     </path>
 
     <path name="speaker">
-        <!-- AOSPA cerro: ensure codec HPH path stays off for AW882 MI2S speakers -->
-        <ctl name="RX_HPH PCM" value="0" />
-        <ctl name="HPH PCM Enable" value="0" />
         <ctl name="aw_dev_1_switch" value="Enable" />
         <ctl name="aw_dev_0_switch" value="Enable" />
         <ctl name="aw_dev_0_prof" value="Music" />

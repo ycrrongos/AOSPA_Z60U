@@ -32,19 +32,6 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
-    name: "init.cerro.audio_jack.rc",
-    src: "etc/init.cerro.audio_jack.rc",
-    sub_dir: "init",
-    vendor: true,
-}
-
-sh_binary {
-    name: "cerro_clear_audio_jack.sh",
-    src: "bin/cerro_clear_audio_jack.sh",
-    vendor: true,
-}
-
-prebuilt_etc {
     name: "ueventd.qcom.rc",
     filename: "ueventd.rc",
     src: "etc/ueventd.qcom.rc",
