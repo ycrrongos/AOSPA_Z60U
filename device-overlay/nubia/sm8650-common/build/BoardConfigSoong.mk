@@ -3,6 +3,10 @@
 # soong.variables JSON. headers_install flags live in build/tools/run-headers-install.sh.
 # Include after build/BoardConfigKernel.mk.
 
+# soong-cerro-generator (0030 headers_install) is a device soong plugin; A16/A17
+# bootstrap rejects unlisted plugins unless allowlisted here.
+BUILD_BROKEN_PLUGIN_VALIDATION += soong-cerro-generator
+
 EXPORT_TO_SOONG := \
     KERNEL_ARCH \
     KERNEL_BUILD_OUT_PREFIX \
