@@ -1,0 +1,12 @@
+# AOSPA cerro: start qseecomd after late-fs (persist mounted).
+# Overrides nubia proprietary on-init start (PRODUCT_COPY_FILES).
+
+on late-fs
+    start vendor.qseecomd
+
+service vendor.qseecomd /vendor/bin/qseecomd
+    socket notify-topology stream 660 system drmrpc
+    class core
+    user root
+    group root drmrpc
+    disabled

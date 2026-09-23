@@ -1,0 +1,3 @@
+# Cerro camera vendor data bootstrap (watermarks + dualcam cali)
+on post-fs-data
+    exec_background - cameraserver camera -- /vendor/bin/init.cerro.camera.sh

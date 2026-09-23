@@ -1,0 +1,13 @@
+# Camera
+ro.vendor.feature.camera_series_info=NubiaZ60Ultra
+ro.vendor.feature.camera_zte_exif_model=nubia Z60 Ultra
+ro.vendor.feature.nubia.exif.module=NUBIA_Z60_ULTRA
+ro.vendor.product.ztename=nubia Z60 Ultra
+
+# Graphics (PlasmaOS / OP12 waffle-aligned)
+ro.surface_flinger.set_idle_timer_ms=80
+ro.surface_flinger.set_display_power_timer_ms=1000
+ro.surface_flinger.set_touch_timer_ms=200
+# PlasmaOS: CERRO_OP12_SF (cerro device)
+# PlasmaOS: cerro camera aux lenses
+persist.vendor.camera.use_aux=1

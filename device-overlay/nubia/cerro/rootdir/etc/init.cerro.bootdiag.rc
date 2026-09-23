@@ -1,0 +1,11 @@
+# AOSPA cerro: early boot diagnostics for logo-hang → recovery
+# PRODUCT_COPY_FILES into vendor (device.mk) required.
+# With androidboot.selinux=permissive (bringup), exec as root works.
+
+on post-fs
+    write /metadata/cerro-boot-init-reached.txt post-fs
+    exec_background - root root -- /vendor/bin/sh /vendor/bin/init.cerro.bootdiag.sh
+
+on early-boot
+    write /metadata/cerro-boot-init-reached.txt early-boot
+    exec_background - root root -- /vendor/bin/sh /vendor/bin/init.cerro.bootdiag.sh

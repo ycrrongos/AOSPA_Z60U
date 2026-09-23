@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Host imgdiff for recovery_from_boot patches. AOSPA calcite does not ship
+  bootable/deprecated-ota (Voltage/Lineage still does). Prefer this over
+  BOARD_USES_FULL_RECOVERY_IMAGE.
+-->
+<manifest>
+  <remote name="github" fetch="https://github.com" />
+
+  <project path="bootable/deprecated-ota"
+           name="VoltageOS/bootable_deprecated-ota"
+           remote="github"
+           revision="17" />
+</manifest>

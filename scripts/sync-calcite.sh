@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SOURCE="$ROOT/source"
+JOBS="${1:-$(nproc)}"
+source "$ROOT/scripts/proxy-env.sh"
+cd "$SOURCE"
+echo "[sync-calcite] repo sync -j$JOBS --current-branch --no-tags"
+echo "[sync-calcite] FlClash proxy=$https_proxy"
+repo sync --current-branch --no-tags -j"$JOBS"
+echo "[sync-calcite] applying device overlay"
+bash "$ROOT/scripts/apply-device-overlay.sh"
+echo "[sync-calcite] pulling vendor Git LFS blobs"
+bash "$ROOT/scripts/pull-vendor-lfs.sh"
+echo "[sync-calcite] complete"

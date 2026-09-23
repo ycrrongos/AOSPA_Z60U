@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Lineage-style in-tree kernel.mk for cerro needs pahole/lz4/perl-base.
+  AOSPA calcite does not ship these trees. Do not overlay kernel_platform/.
+-->
+<manifest>
+  <remote name="github" fetch="https://github.com" />
+
+  <project path="prebuilts/kernel-build-tools"
+           name="kernel/prebuilts/build-tools"
+           remote="aosp"
+           revision="main-kernel-2025" />
+
+  <project path="prebuilts/tools-lineage"
+           name="LineageOS/android_prebuilts_tools-lineage"
+           remote="github"
+           revision="lineage-24.0" />
+</manifest>

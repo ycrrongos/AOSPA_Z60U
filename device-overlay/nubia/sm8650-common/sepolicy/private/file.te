@@ -1,0 +1,5 @@
+# PlasmaOS: declare here — NubiaParts sepolicy may be absent on Voltage
+type sysfs_fan, fs_type, sysfs_type;
+
+# Trigger buttons
+type proc_touchkey, fs_type, proc_type;

@@ -1,0 +1,5 @@
+# Fingerprint
+type fingerprint_device, dev_type;
+
+# IR (Lineage android.hardware.ir-service.lineage)
+type lirc_device, dev_type;

@@ -1,0 +1,40 @@
+# Never commit secrets / credentials files
+/github
+.env
+.env.*
+*.pem
+*.key
+.git-credentials
+
+# Regenerable / huge trees (not truth source)
+/source/
+/.repo/
+/out/
+/prebuilts-cerro/
+/ref-229/
+
+# Build / sync noise
+*.zip
+*.img
+*.bin
+*.tar
+*.tar.gz
+*.tgz
+*.zst
+*.apk
+*.so
+*.o
+*.a
+*.pyc
+__pycache__/
+*.log
+*.tmp
+.DS_Store
+*.swp
+*~
+
+# clo-agent-kit: keep docs/hardware notes, skip heavy EDL toolchains
+/clo-agent-kit/tools/
+
+# Cursor local caches (transcripts mirrored into docs/agent-transcripts/)
+.cursor/cache/

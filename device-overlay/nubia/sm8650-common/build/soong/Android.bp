@@ -1,0 +1,48 @@
+// AOSPA cerro: Voltage-style kernel UAPI generator (headers_install + audio stage).
+// Truth source: device-overlay/nubia/sm8650-common/build/soong/
+
+bootstrap_go_package {
+    name: "soong-cerro-generator",
+    pkgPath: "android/soong/cerro/generator",
+    deps: [
+        "blueprint",
+        "blueprint-pathtools",
+        "blueprint-proptools",
+        "soong",
+        "soong-android",
+    ],
+    srcs: [
+        "generator/generator.go",
+        "generator/variables.go",
+    ],
+    pluginFor: ["soong_build"],
+}
+
+cerro_generator {
+    name: "generated_kernel_includes",
+
+    // Flags for headers_install live in run-headers-install.sh (soong.variables
+    // cannot safely carry KERNEL_MAKE_FLAGS quotes).
+    cmd: "set -e; " +
+         "(cd $(KERNEL_BUILD_OUT_PREFIX).; " +
+         "if [ -n \"$(TARGET_KERNEL_PLATFORM_TARGET)\" ]; then " +
+         "    echo 'AOSPA cerro: TARGET_KERNEL_PLATFORM_TARGET set; bazel UAPI path not wired' >&2; exit 1; " +
+         "fi; " +
+         "device/nubia/sm8650-common/build/tools/run-headers-install.sh " +
+         "$(TARGET_KERNEL_SOURCE) $(KERNEL_BUILD_OUT_PREFIX)$(genDir) $(KERNEL_ARCH))",
+
+    export_include_dirs: [
+        "usr/audio/include/uapi",
+        "usr/include",
+        "usr/include/audio",
+        "usr/include/audio/include/uapi",
+        "usr/techpack/audio/include",
+    ],
+
+    dep_root: "$(TARGET_KERNEL_SOURCE)",
+    dep_files: [
+        "Makefile",
+        "include/**/*",
+        "arch/$(KERNEL_ARCH)/include/**/*",
+    ],
+}

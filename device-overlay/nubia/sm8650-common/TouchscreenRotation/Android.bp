@@ -1,0 +1,21 @@
+//
+// SPDX-FileCopyrightText: 2025 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+android_app {
+    name: "TouchscreenRotation",
+    // ArtistOS: vendor partition for A17 treble seapp + vendor_sysfs_touchpanel
+    sdk_version: "system_current",
+    certificate: "platform",
+    privileged: true,
+    vendor: true,
+
+    srcs: [
+        "src/**/*.kt",
+    ],
+
+    optimize: {
+        enabled: false,
+    },
+}
