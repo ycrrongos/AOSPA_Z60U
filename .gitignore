@@ -7,6 +7,7 @@
 .git-credentials
 
 # Regenerable / huge trees (not truth source)
+/source
 /source/
 /.repo/
 /out/
