@@ -1,0 +1,4 @@
+# AOSPA cerro: on userdebug, keep adbd running as root (equivalent to `adb root`).
+# Gated on ro.debuggable so user builds are unaffected.
+on property:ro.debuggable=1
+    setprop service.adb.root 1

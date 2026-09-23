@@ -32,15 +32,20 @@ PRODUCT_DEVICE := cerro
 PRODUCT_MANUFACTURER := nubia
 PRODUCT_MODEL := NX721J
 PRODUCT_NAME := aospa_cerro
-PRODUCT_SYSTEM_DEVICE := PQ83A01
-PRODUCT_SYSTEM_NAME := PQ83A01-UN
 
 PRODUCT_GMS_CLIENTID_BASE := android-zte
 
+# Stock fingerprint / PQ83A01 spoof — off while bringup (shows real userdebug/test-keys).
+# Re-enable: AOSPA_CERRO_SPOOF_STOCK_FINGERPRINT := true  (see docs/aospa-cerro-patch-toggles.md)
+AOSPA_CERRO_SPOOF_STOCK_FINGERPRINT ?= false
+ifeq ($(AOSPA_CERRO_SPOOF_STOCK_FINGERPRINT),true)
+PRODUCT_SYSTEM_DEVICE := PQ83A01
+PRODUCT_SYSTEM_NAME := PQ83A01-UN
 PRODUCT_BUILD_PROP_OVERRIDES += \
     BuildDesc="PQ83A01-UN PQ83A01 15 AQ3A.240812.002 20250916.013811 release-keys" \
     BuildFingerprint=nubia/PQ83A01-UN/PQ83A01:15/AQ3A.240812.002/20250916.013811:user/release-keys \
     DeviceName=$(PRODUCT_SYSTEM_DEVICE) \
     DeviceProduct=$(PRODUCT_SYSTEM_NAME)
+endif
 
 endif

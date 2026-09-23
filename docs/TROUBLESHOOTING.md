@@ -562,3 +562,9 @@ edl w dtbo_b prebuilts-cerro/dtbo/dtbo-STOCK-sep22-BOOT_OK.img
 - **症状**：`checkpolicy`：`Duplicate declaration of type` at `attribute vendor_hal_qspmhal`（约编到 46%）。
 - **根因**：旧补丁往 `device/qcom/sepolicy/generic/public/attributes` 注入 qspmhal；sync 后 `device/qcom/common/sepolicy/.../attributes` 上游已有同名 attribute，合并重复。
 - **解决**：`patch-sepolicy-qspmhal-attributes.py` 改为：common 已有则删掉 generic 里的注入块；common 没有才补 generic。
+
+### 2026-09-23 — OTA VINTF：livedisplay/touch 已在 device_framework_matrix 但仍失败
+
+- **症状**：`check_target_files_vintf`：manifest 有 `ISunlightEnhancement` / `IHighTouchPollingRate`，报不在 framework FCM。
+- **根因**：`out/.../compatibility_matrix.device.xml` 过期；源 `device_framework_matrix.xml`（0026）已含条目，但 assemble 中间产物未重编，产物里缺这两项（同文件的 goodix 还在）。
+- **解决**：删 `out/soong/.intermediates/.../framework_compatibility_matrix.device.xml`，touch 源矩阵后重编 `otapackage`。手工 `assemble_vintf` 可确认源文件正确。

@@ -2,11 +2,11 @@
 # SPDX-FileCopyrightText: The LineageOS Project
 # SPDX-License-Identifier: Apache-2.0
 #
-# Lunch target is registered in vendor/aospa/products/AndroidProducts.mk
-# (vendor/aospa/products/cerro/aospa_cerro.mk). Do not dual-register here —
-# PRODUCT_NAME must be unique.
-#
 
-PRODUCT_MAKEFILES :=
+PRODUCT_MAKEFILES := \
+    $(LOCAL_DIR)/aospa_cerro.mk
 
-COMMON_LUNCH_CHOICES :=
+COMMON_LUNCH_CHOICES += \
+    aospa_cerro-userdebug \
+    aospa_cerro-user \
+    aospa_cerro-eng
