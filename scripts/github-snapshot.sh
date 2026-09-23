@@ -61,8 +61,17 @@ git_cmd() {
 }
 
 REMOTE="${AOSPA_CERRO_GIT_REMOTE:-origin}"
-BRANCH="${AOSPA_CERRO_GIT_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}"
-if [[ "${BRANCH}" == "HEAD" ]]; then
+# Unborn branch: `rev-parse --abbrev-ref HEAD` fails; prefer symbolic-ref.
+if [[ -n "${AOSPA_CERRO_GIT_BRANCH:-}" ]]; then
+  BRANCH="${AOSPA_CERRO_GIT_BRANCH}"
+elif BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null)"; then
+  :
+elif BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"; then
+  :
+else
+  BRANCH="main"
+fi
+if [[ "${BRANCH}" == "HEAD" || -z "${BRANCH}" ]]; then
   BRANCH="main"
 fi
 
