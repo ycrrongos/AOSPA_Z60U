@@ -535,3 +535,10 @@ edl w dtbo_b prebuilts-cerro/dtbo/dtbo-STOCK-sep22-BOOT_OK.img
 # 若仍卡 logo，再刷 vendor+system_ext（fastbootd 或 EDL）
 # vendor-WORKING-0040-ir.img + system_ext-WORKING-tcmd-lseek.img → 活跃槽
 ```
+
+### 2026-09-23 — 上下文丢失 / 无法判断哪版改坏开机
+
+- **症状**：卡第一屏；agent 上下文丢了，不知道最近改坏了什么；只备份“能开机点”无法继续推进。
+- **错误做法**：只留单个 WORKING img / 口头说“这版能开”。
+- **正确做法**：元仓 https://github.com/ycrrongos/AOSPA_Z60U （私有）。每版跑 `bash scripts/github-snapshot.sh "标题"`（同步 Cursor 聊天到 `docs/agent-transcripts/` + 详细 commit + `snapshot-*` tag）。回滚：`git fetch && git tag -l 'snapshot-*'` / `git checkout <tag> -- device-overlay scripts docs`。
+- **文档**：`docs/features/0048-github-version-snapshots.md`；`AGENTS.md` 规则 6。
