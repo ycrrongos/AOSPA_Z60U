@@ -556,3 +556,9 @@ edl w dtbo_b prebuilts-cerro/dtbo/dtbo-STOCK-sep22-BOOT_OK.img
 - **症状**：`rom-build` 在 soong bootstrap 失败：`New plugins are not supported; however ["soong-cerro-generator"] were found`.
 - **原因**：0030 `headers_install` 自定义 soong 插件；A17 soong 默认拒收未登记插件。
 - **解决**：`BoardConfigSoong.mk` 加 `BUILD_BROKEN_PLUGIN_VALIDATION += soong-cerro-generator`（非声音修补）。
+
+### 2026-09-23 — system_ext_sepolicy：Duplicate vendor_hal_qspmhal
+
+- **症状**：`checkpolicy`：`Duplicate declaration of type` at `attribute vendor_hal_qspmhal`（约编到 46%）。
+- **根因**：旧补丁往 `device/qcom/sepolicy/generic/public/attributes` 注入 qspmhal；sync 后 `device/qcom/common/sepolicy/.../attributes` 上游已有同名 attribute，合并重复。
+- **解决**：`patch-sepolicy-qspmhal-attributes.py` 改为：common 已有则删掉 generic 里的注入块；common 没有才补 generic。

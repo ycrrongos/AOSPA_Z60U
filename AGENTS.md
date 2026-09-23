@@ -21,13 +21,67 @@ cerro 定制必须能在上游 `repo sync` 之后用 apply 脚本重新打进去
 3. **每做一个功能，必须写一篇功能开发文档**（`docs/features/<id>-<slug>.md`）。文档要让没读过本次对话的 agent 能独立接入。
 4. **每次卡住、踩坑、误判，必须记入 `docs/TROUBLESHOOTING.md`。** 记症状、试过的方法、最终原因、解决办法。不要只记在聊天里。
 5. **不要直接大段覆盖上游 SystemUI / Settings 来“顺便”带功能。**
-6. **每个可回滚的版本必须推到 GitHub（强制）。** 改完 `device-overlay/` / `patches/` / `scripts/` / 功能文档后，立刻：
-   `bash scripts/github-snapshot.sh "短标题" <<'EOF' …详细说明… EOF`
-   该脚本会同步 Cursor 聊天记录到 `docs/agent-transcripts/`、写带文件列表的 commit、打 `snapshot-YYYYMMDD-HHMMSS` 标签并 push。丢上下文后靠 GitHub 历史回滚，不要只靠本机或“能开机快照”。无关的琐碎本地试验可以暂不推；**凡是刷机/验证过的版本必须推。**
+6. **每个可回滚的版本必须推到 GitHub（强制）。** 详见下方 **「GitHub 版本备份与回滚」**。禁止只留本机 WORKING img / 口头“这版能开”当备份。
 7. **不要把 cerro 补丁打进无关对照树。** 本机只看 `AOSPA_Z60U`；229 上 ArtistAOSP / OnlyAOSP **只读对照**，不在 229 上 sync。
 8. **`repo sync` 及一切 GitHub 访问必须先开 FlClash 代理**（`scripts/proxy-env.sh`）。未开代理不要 sync / fetch。
 9. **第一版不带 SukiSU / Plasma / Voltage 产品层。** 硬件改良（SF/perf、相机 bootstrap、触控旋转）保留在 `device-overlay/`；产品层用 `aospa_cerro.mk` + `aospa-target.mk`。
 10. **禁止把根目录 `github` 凭据文件、token、`.git-credentials` 提交进仓。** 已在 `.gitignore`。
+
+---
+
+## GitHub 版本备份与回滚（强制）
+
+用户要求（上下文丢失 / 卡开机后必须能立刻回滚）：
+
+1. **Cursor 聊天记录必须进 GitHub**：镜像到 `docs/agent-transcripts/`（`scripts/sync-agent-transcripts.sh`；`.cursor/hooks.json` 在 sessionEnd/stop 也会镜像）。
+2. **每改一个可验证版本，必须把改动推到 GitHub**，commit 正文写清：改了什么、为什么、开机/测试状态、怎么回滚。
+3. **不要**用“单个能开机 zip/img”代替版本史；移植要连续推进，靠 `snapshot-*` 标签回滚。
+
+元仓（私有）：**https://github.com/ycrrongos/AOSPA_Z60U**  
+Owner：`ycrrongos`。不进仓：`source/`、`prebuilts-cerro/`、`ref-229/`、`clo-agent-kit/tools/`、根目录 `github` token。
+
+### 每版必跑
+
+```bash
+source scripts/proxy-env.sh
+bash scripts/github-snapshot.sh "短标题（建议带功能 id）" <<'EOF'
+## What changed
+- …
+
+## Why
+- …
+
+## Boot / test status
+- unknown | boots | stuck on splash | stuck on bootanim | recovery-only | untested
+
+## Rollback
+- git checkout snapshot-YYYYMMDD-HHMMSS -- device-overlay scripts docs patches local_manifests
+EOF
+```
+
+脚本会：同步聊天 → `git add -A` → 带 name-status/diffstat 的详细 commit → 打 `snapshot-YYYYMMDD-HHMMSS` + 移动标签 `cerro-latest` → `git push`。
+
+### 何时必须推
+
+- 功能落地 / 文档写完  
+- 刷机或准备让用户验证的版本  
+- 明确撤回某功能（如声音修补清零）  
+- 排障结论写入 TROUBLESHOOTING 后  
+
+琐碎本地半成品可不推；**一旦给用户刷测或结束一轮对话，必须推。**
+
+### 回滚
+
+```bash
+source scripts/proxy-env.sh
+git fetch origin
+git tag -l 'snapshot-*' | tail
+git log --oneline origin/main | head
+git checkout snapshot-YYYYMMDD-HHMMSS -- device-overlay scripts docs patches local_manifests
+bash scripts/apply-device-overlay.sh
+```
+
+聊天对照：`docs/agent-transcripts/<uuid>/*.jsonl`。细则：[`docs/features/0048-github-version-snapshots.md`](docs/features/0048-github-version-snapshots.md)。
 
 ---
 
@@ -109,6 +163,7 @@ MARKER 用 `// AOSPA cerro: ...`，幂等、可检测、锚点稳定，参数收
 5. 补全文档与 `docs/features/README.md` 索引
 6. 验证：`bash scripts/apply-device-overlay.sh`（sync 后）
 7. 踩坑写入 `docs/TROUBLESHOOTING.md`
+8. **`bash scripts/github-snapshot.sh "<id> <slug>"` 推 GitHub**（含聊天镜像；见上节）
 
 产品层：lunch **`aospa_cerro-userdebug`**，inherit **`vendor/aospa/target/product/aospa-target.mk`**，不要 inherit `vendor/voltage` / `vendor/lineage`。
 
@@ -154,6 +209,8 @@ source scripts/proxy-env.sh
 bash scripts/sync-calcite.sh              # sync + overlay
 bash scripts/apply-device-overlay.sh      # 仅重放 overlay
 bash scripts/strip-plasma-device-overlay.sh
+bash scripts/sync-agent-transcripts.sh    # 仅镜像 Cursor 聊天
+bash scripts/github-snapshot.sh "标题"    # 聊天 + 详细 commit + tag + push（每版必跑）
 
 cd source
 source build/envsetup.sh
